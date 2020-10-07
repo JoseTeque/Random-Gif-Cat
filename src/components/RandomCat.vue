@@ -40,7 +40,9 @@
       </div>
       <button type="submit">Obtener mi gatito</button>
     </form>
-
+    <div class="spinner-border mt-5" :class="{'d-none': !loading}" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
     <div class="mt-5 pb-5" >
         <img :src="imagen" alt="">
     </div>
@@ -60,20 +62,23 @@ export default {
       color:  "",
       titulo: "",
       tamaño:0,
-      imagen: ""
+      imagen: "",
+      loading: false
       }
 
   },
   methods: {
       async getcat(){
-
+          this.loading = true;
+          this.imagen = ""
           try {
 
                 let BaseUrl = `https://cataas.com/cat/gif/says/${this.titulo}?`;
 
                 let response = await fetch(`${BaseUrl}filter=${this.filtro}&color=${this.color}&size=${this.tamaño}`)
 
-               this.imagen = response.url;
+                this.imagen = response.url;
+                this.loading = false;
         
           } catch (error) {
               console.log(error)
